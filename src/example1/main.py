@@ -86,7 +86,14 @@ print(f"Weights: {result['individual'].weights}")
 print(f"Threshold: {result['individual'].threshold}")
 
 
-plt.scatter(dataset[:6][:, 0], dataset[:6][:, 1], marker='^', c='black')
-plt.scatter(dataset[6:][:, 0], dataset[6:][:, 1], marker='o', c='yellow')
-plt.plot([0, 3])
+w0 = result['individual'].weights[0]
+w1 = result['individual'].weights[1]
+w2 = result['individual'].threshold
+
+slope = -(w0 / w2) / (w0 / w1)
+intercept = -w0 / w2
+
+plt.scatter(dataset[:6][:, 0], dataset[:6][:, 1], marker='^', c='red')
+plt.scatter(dataset[6:][:, 0], dataset[6:][:, 1], marker='o', c='blue')
+plt.plot([-1, 4], [(intercept+slope*-1), (intercept+slope*4)])
 plt.show()
