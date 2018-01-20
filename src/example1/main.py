@@ -53,7 +53,7 @@ def evaluateneuron(data, neuron, debug=False):
 
 
 # start train
-population_size = 20
+population_size = 30
 population = [Neuron(2) for i in range(population_size)]
 
 
@@ -93,6 +93,8 @@ w2 = result['individual'].threshold
 slope = -(w0 / w2) / (w0 / w1)
 intercept = -w0 / w2
 
+
+#TODO: this line is so wrong, I have to stop and understand the problem. Maybe later.
 plt.scatter(dataset[:6][:, 0], dataset[:6][:, 1], marker='^', c='red')
 plt.scatter(dataset[6:][:, 0], dataset[6:][:, 1], marker='o', c='blue')
 plt.plot([-1, 4], [(intercept+slope*-1), (intercept+slope*4)])
