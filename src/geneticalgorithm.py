@@ -211,7 +211,7 @@ def ga(population, fitness, crossover_prob, mutation_prob, crossover, mutation, 
 
                 # randomly select who lives
                 indexes = np.random.choice(range(len(new_population)), size=population_size, replace=False, p=probs)
-                population = new_population[indexes];
+                population = new_population[indexes]
 
         epoch += 1
 
