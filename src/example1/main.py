@@ -81,7 +81,7 @@ def mutation(individual):
     temp = weights[0]
     weights[0] = weights[1]
     weights[1] = temp
-    threshold = individual.threshold * np.random.normal()*temp
+    threshold = individual.threshold + np.random.normal(0,1)*temp
     return Neuron(weights=weights, threshold=threshold)
 
 
@@ -89,8 +89,8 @@ def fitness(individual):
     return evaluateneuron(train_set, individual)
 
 # start train
-epochs = 800
-population_size = 100
+epochs = 100
+population_size = 20
 population = [Neuron(2) for i in range(population_size)]
 
 fitness_history = []
@@ -100,7 +100,7 @@ def each_individual(individual, fit_val, epoch):
 
     fitness_history[-1].append(fit_val)
 
-result = ga(population=population, progenitors_amount=4, offsprings=2, objective='minimize', crossover=crossover, mutation=mutation, fitness=fitness, max_epochs=epochs, crossover_prob=0.98, mutation_prob=0.3, elitist=False, each_individual=each_individual, mutation_extra_individual=False)
+result = ga(population=population, progenitors_amount=4, offsprings=4, objective='minimize', crossover=crossover, mutation=mutation, fitness=fitness, max_epochs=epochs, crossover_prob=0.98, mutation_prob=0.05, elitist=False, each_individual=each_individual, mutation_extra_individual=False, generational=False)
 errors = evaluateneuron(test_set, result['individual'], debug=True,plt=plt)
 
 print(f"Error (%): {(errors/len(dataset))*100}%")
@@ -113,14 +113,13 @@ w1 = result['individual'].weights[0]
 w2 = result['individual'].weights[1]
 b = result['individual'].threshold
 
-x = -b / w2
-y = -b / w1
+# Decision landscape
+# w1*x1+ w2*x2 + b = 0
+# w2*x2 = -b - w1*x1
+# x2 = (-b -w1*x1)/w2
 
-d = y
-c = -y / x
-
-line_x_coords = np.array([0, 4])
-line_y_coords = c * line_x_coords + d
+line_x_coords = np.array([0.5, 3.5])
+line_y_coords = (-b - w1*line_x_coords)/w2
 
 plt.plot(line_x_coords, line_y_coords)
 
